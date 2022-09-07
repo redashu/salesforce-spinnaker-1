@@ -284,4 +284,42 @@ spinnaker@ip-172-31-4-161:~$ hal  config version edit --version 1.27.1
 spinnaker@ip-172-31-4-161:~$ sudo hal  deploy apply  
 ```
 
+### if we face package level error then we can use 
+
+```
+dpkg configure -a 
+sudo hal  deploy apply 
+```
+
+### halyard installed all the components that we can check using 
+
+```
+ 59  sudo systemctl status  apache2
+   60  sudo systemctl status  gate
+   61  sudo systemctl status  orca
+   62  history 
+   63  sudo systemctl status  igor
+   64  sudo systemctl status  rosco 
+```
+
+### By default deck and other services are configure in localhost so we need to edit this 
+
+```
+ 73  hal config security ui edit --override-base-url "http://34.215.91.255:9000"
+   74  hal config security api  edit --override-base-url "http://34.215.91.255:8084"
+   75  sudo hal deploy apply 
+
+```
+
+###  restart daemon 
+
+```
+sudo systemctl daemon-reload 
+sudo systemctl restart halyard 
+```
+
+## Note: in few version of spinnaker security edit changes may not work so we have to change at component level it self 
+
+
+
 
