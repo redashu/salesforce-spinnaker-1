@@ -139,4 +139,88 @@ spinnaker@ip-172-31-4-161:~$ hal -v
 1.50.0
 ```
 
+### Understanding more about Halyard --
+
+### log directory 
+
+```
+spinnaker@ip-172-31-4-161:~$ ls  /var/log/
+alternatives.log  auth.log  cloud-init-output.log  dmesg     journal    lastlog    syslog                      wtmp
+amazon            btmp      cloud-init.log         dmesg.0   kern.log   private    ubuntu-advantage-timer.log
+apt               chrony    dist-upgrade           dpkg.log  landscape  spinnaker  unattended-upgrades
+spinnaker@ip-172-31-4-161:~$ ls  /var/log/spinnaker/
+halyard
+spinnaker@ip-172-31-4-161:~$ ls  /var/log/spinnaker/halyard/
+spinnaker@ip-172-31-4-161:~$ 
+
+
+```
+
+### configuration details 
+
+```
+spinnaker@ip-172-31-4-161:~$ ls  /opt/
+halyard  spinnaker
+spinnaker@ip-172-31-4-161:~$ ls  /opt/halyard/
+bin  config  lib
+spinnaker@ip-172-31-4-161:~$ ls  /opt/halyard/config/
+halyard.yml
+spinnaker@ip-172-31-4-161:~$ ls  /opt/spinnaker/
+config
+spinnaker@ip-172-31-4-161:~$ ls  /opt/spinnaker/config/
+halyard-user  halyard.yml
+spinnaker@ip-172-31-4-161:~$ cat  /opt/spinnaker/config/halyard-user 
+spinnaker
+spinnaker@ip-172-31-4-161:~$ 
+```
+
+### choose env to install spinnaker components 
+
+```
+spinnaker@ip-172-31-4-161:~$ hal config deploy  edit --type localdebian 
++ Get current deployment
+  Success
++ Get the deployment environment
+  Success
+- No changes supplied.
+spinnaker@ip-172-31-4-161:~$ 
+
+```
+
+### choosing spinnaker storage 
+
+<img src="storage.png">
+
+### configure halyard to add s3 
+
+```
+hal config storage s3 edit  --access-key-id  AKIA25YZWFYDTRSR6V6K  --secret-access-key  --region  us-west-2  --bucket ashutoshhspinnaker-storage 
+Your AWS Secret Key.: 
++ Get current deployment
+  Success
++ Get persistent store
+  Success
++ Edit persistent store
+  Success
+Validation in default.persistentStorage:
+- WARNING Your deployment will most likely fail until you configure
+  and enable a persistent store.
+
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+  - 1.28.1
+  - 1.27.1
+  - 1.26.7
+  - 1.25.7
+  - 1.24.6
+  - 1.23.7
+
++ Successfully edited persistent store "s3".
+spinnaker@ip-172-31-4-161:~$ 
+
+```
+
+
 
