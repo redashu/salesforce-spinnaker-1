@@ -444,6 +444,39 @@ Successfully built 56146ee96519
 Successfully tagged ashuapp:v1
 ```
 
+### compose file 
+
+```
+[spinnaker@client ashu]$ cat docker-compose.yaml 
+version: '3.8'
+services:
+  ashuapp1:
+    image: ashuapp:v1
+    build: .
+    container_name: ashuc11
+    ports:
+      - "1233:80"
+```
+
+====
+
+```
+ 35  docker-compose up -d --build 
+   36  docker-compose down 
+   37  history 
+   38  ls
+   39  cat  docker-compose.yaml 
+   40  docker-compose up -d --build 
+   41  docker-compose ps
+   42  ls
+   43  docker  ps
+   44  docker-compose ps
+   45  history 
+[spinnaker@client ashu]$ docker-compose ps
+NAME                COMMAND                  SERVICE             STATUS              PORTS
+ashuc11             "/docker-entrypoint.…"   ashuapp1            running             0.0.0.0:1233->80/tcp, :::1233->80/tcp
+
+```
 
 
 
