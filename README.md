@@ -393,6 +393,57 @@ tcp6       0      0 ::1:6379                :::*                    LISTEN      
 spinnaker@ip-172-31-4-161:~$  sudo systemctl daemon-reload
 ```
 
+## To CI part we are doing docker based application build and test 
+
+### taking sample code 
+
+```
+https://github.com/microsoft/project-html-website.git
+```
+
+### adding Dockerfile to it 
+
+```
+spinnaker@client ashu]$ cat Dockerfile 
+FROM nginx
+LABEL name=ashutoshh
+COPY project-html-website  /usr/share/nginx/html/
+EXPOSE 80
+
+```
+
+### lets build it 
+
+```
+[spinnaker@client ashu]$ ls
+project-html-website
+[spinnaker@client ashu]$ vim Dockerfile
+[spinnaker@client ashu]$ cat Dockerfile 
+FROM nginx
+LABEL name=ashutoshh
+COPY project-html-website  /usr/share/nginx/html/
+EXPOSE 80
+[spinnaker@client ashu]$ ls
+Dockerfile  project-html-website
+[spinnaker@client ashu]$ ls
+Dockerfile  project-html-website
+[spinnaker@client ashu]$ docker  build  -t  ashuapp:v1  . 
+Sending build context to Docker daemon  1.371MB
+Step 1/4 : FROM nginx
+ ---> 2b7d6430f78d
+Step 2/4 : LABEL name=ashutoshh
+ ---> Using cache
+ ---> 3e90bb43e258
+Step 3/4 : COPY project-html-website  /usr/share/nginx/html/
+ ---> c2c5a5ff17bc
+Step 4/4 : EXPOSE 80
+ ---> Running in 698b00a849e4
+Removing intermediate container 698b00a849e4
+ ---> 56146ee96519
+Successfully built 56146ee96519
+Successfully tagged ashuapp:v1
+```
+
 
 
 
