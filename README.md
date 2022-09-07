@@ -49,7 +49,94 @@ Welcome to Ubuntu 22.04 LTS (GNU/Linux 5.15.0-1011-aws x86_64)
 
 ```
 
+### Now creating user 
+
+```
+ubuntu@ip-172-31-4-161:~$ sudo adduser  spinnaker  
+Adding user `spinnaker' ...
+Adding new group `spinnaker' (1001) ...
+Adding new user `spinnaker' (1001) with group `spinnaker' ...
+Creating home directory `/home/spinnaker' ...
+Copying files from `/etc/skel' ...
+New password: 
+Retype new password: 
+passwd: password updated successfully
+Changing the user information for spinnaker
+Enter the new value, or press ENTER for the default
+	Full Name []: 
+	Room Number []: 
+	Work Phone []: 
+	Home Phone []: 
+	Other []: 
+Is the information correct? [Y/n] y
+ubuntu@ip-172-31-4-161:~$ 
+
+```
+
+### adding user to sudo group 
+
+```
+ubuntu@ip-172-31-4-161:~$ sudo ls /etc/sudoers.d/
+90-cloud-init-users  README
+ubuntu@ip-172-31-4-161:~$ sudo vim  /etc/sudoers.d/90-cloud-init-users 
+ubuntu@ip-172-31-4-161:~$ 
+ubuntu@ip-172-31-4-161:~$ sudo  cat  /etc/sudoers.d/90-cloud-init-users
+# Created by cloud-init v. 22.2-0ubuntu1~22.04.1 on Wed, 07 Sep 2022 04:58:54 +0000
+
+# User rules for ubuntu
+ubuntu ALL=(ALL) NOPASSWD:ALL
+spinnaker ALL=(ALL) NOPASSWD:ALL
+```
+
+### login to spinnaker user 
+
+```
+ubuntu@ip-172-31-4-161:~$ su  - spinnaker 
+Password: 
+spinnaker@ip-172-31-4-161:~$ 
+spinnaker@ip-172-31-4-161:~$ whoami
+spinnaker
+spinnaker@ip-172-31-4-161:~$ 
+
+```
+
+## Installing halyard on your VM 
+
+[Link](https://spinnaker.io/docs/setup/install/halyard/)
+
+### Installing halyard 
+
+```
+spinnaker@ip-172-31-4-161:~$ curl -O https://raw.githubusercontent.com/spinnaker/halyard/master/install/debian/InstallHalyard.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  7898  100  7898    0     0  80749      0 --:--:-- --:--:-- --:--:-- 81422
+spinnaker@ip-172-31-4-161:~$ ls
+InstallHalyard.sh
+spinnaker@ip-172-31-4-161:~$ sudo bash InstallHalyard.sh 
+Halyard version will be 1.50.0 
+Halyard will be downloaded from the spinnaker-community repository 
+Halconfig will be stored at /home/spinnaker/.hal/config
+Uninstall script is located at /usr/local/bin/uninstall-halyard.sh
+Installing Java...
+Hit:1 http://us-west-2.ec2.archive.
 
 
+Would you like to configure halyard to use bash auto-completion? [default=Y]: 
+
+Where is your bash RC? [default=/root/.bashrc]: /home/spinnaker/.bashrc
+Bash auto-completion configured.
+To use the auto-completion either restart your shell, or run
+. /home/spinnaker/.bashrc
+Halyard version: 1.50.0
+```
+
+
+### checking halyard version 
+
+```
+spinnaker@ip-172-31-4-161:~$ hal -v
+1.50.0
+```
 
 
