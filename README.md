@@ -274,14 +274,14 @@ spinnaker@ip-172-31-4-161:~$ hal version list
 
 ### setting version and deploy spinnaker components
 ```
-spinnaker@ip-172-31-4-161:~$ hal  config version edit --version 1.25.7
+spinnaker@ip-172-31-4-161:~$ hal  config version edit --version 1.27.1
 + Get current deployment
   Success
 + Edit Spinnaker version
   Success
 + Spinnaker has been configured to update/install version "1.25.7".
   Deploy this version of Spinnaker with `hal deploy apply`.
-spinnaker@ip-172-31-4-161:~$ hal  deploy apply  
+spinnaker@ip-172-31-4-161:~$ sudo hal  deploy apply  
 ```
 
 
