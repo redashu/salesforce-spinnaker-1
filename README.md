@@ -223,4 +223,65 @@ spinnaker@ip-172-31-4-161:~$
 ```
 
 
+### changing storage type 
+
+```
+spinnaker@ip-172-31-4-161:~$ hal config storage edit --type s3
++ Get current deployment
+  Success
++ Get persistent storage settings
+  Success
++ Edit persistent storage settings
+  Success
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+  - 1.28.1
+  - 1.27.1
+  - 1.26.7
+  - 1.25.7
+  - 1.24.6
+  - 1.23.7
+
++ Successfully edited persistent storage.
+```
+
+### choosing spinnaker version 
+
+```
+spinnaker@ip-172-31-4-161:~$ hal version list 
++ Get current deployment
+  Success
++ Get Spinnaker version
+  Success
++ Get released versions
+  Success
++ You are on version "", and the following are available:
+ - 1.23.7 (Hemlock Grove):
+   Changelog: https://gist.github.com/spinnaker-release/94280a2b615adccd975eed73359023ac
+   Published: Fri Feb 19 01:25:30 UTC 2021
+   (Requires Halyard >= 1.32.0)
+ - 1.24.6 (Queen's Gambit):
+   Changelog: https://gist.github.com/spinnaker-release/25abcd046795c6f34bb2d8d4977f0415
+   Published: Thu Jul 01 20:40:34 UTC 2021
+   (Requires Halyard >= 1.32)
+ - 1.25.7 (Chilling Adventures of Sabrina):
+   Changelog: https://gist.github.com/spinnaker-release/83c1a4069029bfd79d11ad8e8bf1d326
+   Published: Fri Jul 02 21:23:23 UTC 2021
+   (Requires Halyard >= 1.41)
+```
+
+### setting version and deploy spinnaker components
+```
+spinnaker@ip-172-31-4-161:~$ hal  config version edit --version 1.25.7
++ Get current deployment
+  Success
++ Edit Spinnaker version
+  Success
++ Spinnaker has been configured to update/install version "1.25.7".
+  Deploy this version of Spinnaker with `hal deploy apply`.
+spinnaker@ip-172-31-4-161:~$ hal  deploy apply  
+```
+
 
