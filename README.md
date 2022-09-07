@@ -320,6 +320,46 @@ sudo systemctl restart halyard
 
 ## Note: in few version of spinnaker security edit changes may not work so we have to change at component level it self 
 
+### in some case these are the things 
+
+```
+spinnaker@ip-172-31-4-161:~$ cd /opt/
+spinnaker@ip-172-31-4-161:/opt$ ls
+clouddriver  deck  echo  front50  gate  halyard  igor  orca  rosco  spinnaker  spinnaker-monitoring
+spinnaker@ip-172-31-4-161:/opt$ cd  spinnaker
+spinnaker@ip-172-31-4-161:/opt/spinnaker$ ls
+config
+spinnaker@ip-172-31-4-161:/opt/spinnaker$ cd config/
+spinnaker@ip-172-31-4-161:/opt/spinnaker/config$ ls
+clouddriver.yml  front50.yml  halyard-user  igor.yml  rosco.yml
+echo.yml         gate.yml     halyard.yml   orca.yml  spinnaker.yml
+spinnaker@ip-172-31-4-161:/opt/spinnaker/config$ sudo vim spinnaker.yml 
+spinnaker@ip-172-31-4-161:/opt/spinnaker/config$ cd /etc/apache2/
+spinnaker@ip-172-31-4-161:/etc/apache2$ ls
+apache2.conf    conf-enabled  magic           mods-enabled  ports.conf       sites-enabled
+conf-available  envvars       mods-available  passphrase    sites-available
+spinnaker@ip-172-31-4-161:/etc/apache2$ vim ports.conf 
+spinnaker@ip-172-31-4-161:/etc/apache2$ sudo vim ports.conf 
+spinnaker@ip-172-31-4-161:/etc/apache2$ cd sites-enabled/
+spinnaker@ip-172-31-4-161:/etc/apache2/sites-enabled$ ls
+spinnaker.conf
+spinnaker@ip-172-31-4-161:/etc/apache2/sites-enabled$ sudo vim spinnaker.conf 
+spinnaker@ip-172-31-4-161:/etc/apache2/sites-enabled$ cd
+spinnaker@ip-172-31-4-161:~$ 
+spinnaker@ip-172-31-4-161:~$ sudo systemctl restart  apache2 gate orca igor rosco.service  front50 echo  clouddriver.service   redis-server.service
+spinnaker@ip-172-31-4-161:~$ sudo netstat -nlpt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:9000            0.0.0.0:*               LISTEN      30498/apache2       
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      26692/sshd: /usr/sb 
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      26731/systemd-resol 
+tcp        0      0 127.0.0.1:6379          0.0.0.0:*               LISTEN      30489/redis-server  
+tcp6       0      0 :::22                   :::*                    LISTEN      26692/sshd: /usr/sb 
+tcp6       0      0 :::8064                 :::*                    LISTEN      3818/java           
+tcp6       0      0 ::1:6379                :::*                    LISTEN      30489/redis-server  
+spinnaker@ip-172-31-4-161:~$  sudo systemctl daemon-reload
+```
+
 
 
 
