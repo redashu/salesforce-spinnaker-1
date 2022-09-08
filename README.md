@@ -367,6 +367,10 @@ spin-rosco         ClusterIP   10.109.43.98     <none>        8087/TCP         4
    28  hal deploy apply 
 ```
 
+### Spinnaker application and Pipeline 
+
+<img src="app_line.png">
+
 
 
 
