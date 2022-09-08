@@ -92,5 +92,17 @@ premapp   1/1     1            1           6s
 
 ```
 
+### Lets expose app to external world 
+
+```
+[spinnaker@client ashu]$ kubectl  expose deployment  ashuapp  --type NodePort --port 80 --dry-run=client -o yaml >expose.yaml
+[spinnaker@client ashu]$ kubectl apply -f  expose.yaml 
+service/ashuapp created
+[spinnaker@client ashu]$ kubectl  get  service
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+ashuapp      NodePort    10.96.168.146   <none>        80:30640/TCP   24s
+```
+
+
 
 
