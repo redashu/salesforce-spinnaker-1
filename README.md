@@ -104,5 +104,210 @@ ashuapp      NodePort    10.96.168.146   <none>        80:30640/TCP   24s
 ```
 
 
+## Lets deploy spinnaker to kubernetes cluster 
+
+### creating halyard container -- the installer of spinnaker 
+
+```
+mkdir  ~/.hal
+docker run -d --name  halyard -v  ~/.hal:/home/spinnaker/.hal -v ~/.kube/config:/home/spinnaker/.kube/config   --restart  always gcr.io/spinnaker-marketplace/halyard:stable
+```
+
+### creating namesapce for spinnaker installation 
+
+```
+[ec2-user@client ~]$ docker  exec -it halyard bash 
+bash-5.0$ 
+bash-5.0$ 
+bash-5.0$ hal -v
+1.42.0-20210408182114
+bash-5.0$ 
+bash-5.0$ kubectl get nodes
+NAME            STATUS   ROLES           AGE     VERSION
+control-plane   Ready    control-plane   2d12h   v1.25.0
+node1           Ready    <none>          2d11h   v1.25.0
+node2           Ready    <none>          2d11h   v1.25.0
+bash-5.0$ 
+bash-5.0$ 
+bash-5.0$ kubectl create ns  spinnaker 
+namespace/spinnaker created
+bash-5.0$ 
+
+
+```
+
+### add k8s to halyard 
+
+```
+bash-5.0$ hal config provider kubernetes enable
++ Get current deployment
+  Success
++ Edit the kubernetes provider
+  Success
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+  - 1.28.1
+  - 1.27.1
+  - 1.26.7
+  - 1.25.7
+  - 1.24.6
+
+```
+
+###  setting namespace default and using in halyard configuration 
+
+```
+kubectl config set-context --current --namespace spinnaker
+
+bash-5.0$ hal config provider kubernetes account add  ashu-k8s-acc  --context $(kubectl config current-context)
++ Get current deployment
+  Success
++ Add the ashu-k8s-acc account
+  Success
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+  - 1.28.1
+  - 1.27.1
+  - 1.26.7
+  - 1.25.7
+  - 1.24.6
+  - 1.23.7
+
+Validation in halconfig:
+- WARNING There is a newer version of Halyard available (1.49.0),
+  please update when possible
+? Run 'sudo apt-get update && sudo apt-get install
+  spinnaker-halyard -y' to upgrade
+
++ Successfully added account ashu-k8s-acc for provider
+  kubernetes.
+
+```
+
+#### enable artifacts in k8s halyard
+
+```
+bash-5.0$ hal config features edit --artifacts  true
++ Get current deployment
+  Success
++ Get features
+  Success
++ Edit features
+  Success
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+  - 1.28.1
+  - 1.27.1
+  - 1.26.7
+  - 1.25.7
+  - 1.24.6
+  - 1.23.7
+
+Validation in halconfig:
+- WARNING There is a newer version of Halyard available (1.49.0),
+  please update when possible
+? Run 'sudo apt-get update && sudo apt-get install
+  spinnaker-halyard -y' to upgrade
+
++ Successfully updated features.
+
+```
+
+### choosing distributed Env 
+
+```
+bash-5.0$ hal config deploy edit --type distributed --account-name ashu-k8s-acc 
++ Get current deployment
+  Success
++ Get the deployment environment
+  Success
++ Edit the deployment environment
+  Success
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+  - 1.28.1
+  - 1.27.1
+  - 1.26.7
+
+```
+
+### storage s3 for spinnaker 
+
+```
+bash-5.0$ hal config storage s3 edit  --access-key-id  AKIA25YZWFYDTRSR6V6K  --secret-access-key  --region  us-west-2 
+Your AWS Secret Key.: 
++ Get current deployment
+  Success
++ Get persistent store
+  Success
+Generated bucket name: spin-019a4ec2-0860-4463-9c81-f5a73e2334ec
++ Edit persistent store
+  Success
+
+
+====
+bash-5.0$ hal config storage edit --type s3
++ Get current deployment
+  Success
++ Get persistent storage settings
+  Success
++ Edit persistent storage settings
+  Success
+Validation in default:
+- WARNING You have not yet selected a version of Spinnaker to
+  deploy.
+? Options include: 
+
+```
+
+### adding version 
+
+```
+bash-5.0$ hal config version edit --version 1.25.7 
++ Get current deployment
+  Success
++ Edit Spinnaker version
+  Success
+Validation in halconfig:
+- WARNING There is a newer version of Halyard available (1.49.0),
+  please update when possible
+? Run 'sudo apt-get update && sudo apt-get install
+  spinnaker-halyard -y' to upgrade
+
++ Spinnaker has been configured to update/install version "1.25.7".
+  Deploy this version of Spinnaker with `hal deploy apply`.
+```
+
+### deploy spinnaker 
+
+```
+  version 1.25.7: Artifacts are now enabled by default.
+? You no longer need this.
+
+Validation in default.stats:
+- INFO Stats are currently ENABLED. Usage statistics are being
+  collected. Thank you! These stats inform improvements to the product, and that
+  helps the community. To disable, run `hal config stats disable`. To learn more
+  about what and how stats data is used, please see
+  https://www.spinnaker.io/community/stats.
+
+Validation in halconfig:
+- WARNING There is a newer version of Halyard available (1.49.0),
+  please update when possible
+? Run 'sudo apt-get update && sudo apt-get install
+  spinnaker-halyard -y' to upgrade
+
+
+```
+
+
 
 
