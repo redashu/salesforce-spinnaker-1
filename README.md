@@ -308,6 +308,65 @@ Validation in halconfig:
 
 ```
 
+### checking in k8s cluster about spinnaker components 
+
+```
+[ec2-user@client ~]$ kubectl  get  deploy -n spinnaker 
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+spin-clouddriver   1/1     1            1           34m
+spin-deck          1/1     1            1           34m
+spin-echo          1/1     1            1           34m
+spin-front50       1/1     1            1           34m
+spin-gate          1/1     1            1           34m
+spin-orca          1/1     1            1           34m
+spin-redis         1/1     1            1           34m
+spin-rosco         1/1     1            1           34m
+[ec2-user@client ~]$ kubectl  get service   -n spinnaker 
+NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+spin-clouddriver   ClusterIP   10.101.45.207    <none>        7002/TCP   34m
+spin-deck          ClusterIP   10.100.125.30    <none>        9000/TCP   34m
+spin-echo          ClusterIP   10.101.185.242   <none>        8089/TCP   34m
+spin-front50       ClusterIP   10.102.114.175   <none>        8080/TCP   34m
+spin-gate          ClusterIP   10.107.61.251    <none>        8084/TCP   34m
+spin-orca          ClusterIP   10.99.19.54      <none>        8083/TCP   34m
+spin-redis         ClusterIP   10.105.117.110   <none>        6379/TCP   34m
+spin-rosco         ClusterIP   10.109.43.98     <none>        8087/TCP   34m
+[ec2-user@client ~]$ 
+
+```
+
+### changing service type of deck to Ndoeport / Loadbalancer
+
+```
+kubectl edit service  spin-deck 
+```
+
+### all service type 
+
+```
+[ec2-user@client ~]$ kubectl  get service   -n spinnaker 
+NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+spin-clouddriver   ClusterIP   10.101.45.207    <none>        7002/TCP         40m
+spin-deck          NodePort    10.100.125.30    <none>        9000:30770/TCP   40m
+spin-echo          ClusterIP   10.101.185.242   <none>        8089/TCP         40m
+spin-front50       ClusterIP   10.102.114.175   <none>        8080/TCP         40m
+spin-gate          NodePort    10.107.61.251    <none>        8084:32247/TCP   40m
+spin-orca          ClusterIP   10.99.19.54      <none>        8083/TCP         40m
+spin-redis         ClusterIP   10.105.117.110   <none>        6379/TCP         40m
+spin-rosco         ClusterIP   10.109.43.98     <none>        8087/TCP         40m
+[ec2-user@client ~]$ 
+
+```
+
+### update URL of deck and gate
+
+```
+ 25   hal config security ui edit --override-base-url "http://34.233.5.195:30770"
+   26  history 
+   27   hal config security api edit --override-base-url "http://34.233.5.195:32247"
+   28  hal deploy apply 
+```
+
 
 
 
