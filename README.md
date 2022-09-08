@@ -74,5 +74,23 @@ node2           Ready    <none>          2d11h   v1.25.0
 
 <img src="res.png">
 
+### Deploy sample app and access it 
+
+```
+ kubectl  create  deployment ashuapp  --image=dockerashu/jecrcapp:v1  --port 80 --dry-run=client -o yaml   >app.yaml 
+```
+### lets deploy it 
+
+```
+[spinnaker@client ashu]$ kubectl apply -f  app.yaml 
+deployment.apps/ashuapp configured
+[spinnaker@client ashu]$ kubectl  get  deploy 
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+ashuapp   1/1     1            1           3m35s
+premapp   1/1     1            1           6s
+[spinnaker@client ashu]$ 
+
+```
+
 
 
