@@ -382,5 +382,22 @@ spin-rosco         ClusterIP   10.109.43.98     <none>        8087/TCP         4
 
 <img src="appd1.png">
 
+## jenkins integration with Spinnaker 
+
+### using halyard to configure 
+
+```
+ 32  hal config ci jenkins enable
+   33  hal config ci jenkins master add  ashu-jenkins  --address http://54.210.210.201:8080/  --username admin --password
+     38  hal config ci jenkins master edit   ashu-jenkins --csrf  true 
+     hal deploy apply 
+```
+
+
+### spinnaker Igor for Trigger 
+
+<img src="igor.png">
+
+
 
 
