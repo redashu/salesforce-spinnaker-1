@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashuapp
+  name: ashuapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashuapp
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashuapp
+    spec:
+      containers:
+      - image: dockerashu/jecrcapp:v1
+        name: jecrcapp
+        ports:
+        - containerPort: 80
+        resources: {}
+status: {}
