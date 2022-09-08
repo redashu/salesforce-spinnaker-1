@@ -372,5 +372,11 @@ spin-rosco         ClusterIP   10.109.43.98     <none>        8087/TCP         4
 <img src="app_line.png">
 
 
+## Now performing CI option with Jenkins 
+
+### setting up Vscode with Docker & jenkins Instances 
+
+<img src="vscode.png">
+
 
 
