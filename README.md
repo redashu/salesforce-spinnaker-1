@@ -378,5 +378,9 @@ spin-rosco         ClusterIP   10.109.43.98     <none>        8087/TCP         4
 
 <img src="vscode.png">
 
+### app test and deploy
+
+<img src="appd1.png">
+
 
 
