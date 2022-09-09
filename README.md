@@ -48,3 +48,36 @@ bash-5.0$ exit
   105  hal config provider aws edit --access-key-id  RSR6V6K  --secret-access-key  
   106  hal deploy apply 
 ```
+
+## Deployment strategy 
+
+<img src="str1.png">
+
+### adding EKS to halyard instance 
+
+```
+ 479  aws eks list-clusters  
+  480  aws eks upate-kubeconfig 
+  481  aws eks update-kubeconfig 
+  482  aws eks update-kubeconfig  help
+  483  aws eks update-kubeconfig  --name eks-production
+  484  kubectl config get-contexts
+
+```
+
+### creating namespaces 
+
+```
+[spinnaker@client ~]$ docker  exec -it  halyard  bash 
+bash-5.0$ kubectl  get  ns
+NAME              STATUS   AGE
+ashu-app          Active   82s
+default           Active   48m
+kube-node-lease   Active   48m
+kube-public       Active   48m
+kube-system       Active   48m
+bash-5.0$ kubectl  create  ns  yourname-
+
+
+```
+
