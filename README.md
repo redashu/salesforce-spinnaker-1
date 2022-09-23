@@ -241,4 +241,71 @@ spin-igor-6f5d6998f-t4rhb   1/1     Running   1 (3h5m ago)   4h42m   192.168.104
 
 ```
 
+### adding github account to halyard config 
+
+```
+bash-5.0$ echo "Mto1L7k1gxskdjlsdfjsldkf" >/tmp/ashu_token
+bash-5.0$ 
+bash-5.0$ hal config artifact github enable 
++ Get current deployment
+  Success
++ Edit the github provider
+  Success
++ Successfully enabled github
+bash-5.0$ 
+bash-5.0$ hal config artifact github account  add ashu-git-artifact-account  --token-file /tmp/ashu_token 
++ Get current deployment
+  Success
++ Add the ashu-git-artifact-account artifact account
+  Success
++ Successfully added artifact account ashu-git-artifact-account for
+  artifact provider github.
+```
+
+### lets apply changes 
+
+```
+bash-5.0$ hal deploy apply 
++ Get current deployment
+  Success
++ Prep deployment
+  Success
+Validation in default.features:
+- WARNING Field Features.artifacts not supported for Spinnaker
+  version 1.26.7: Artifacts are now enabled by default.
+? You no longer need this.
+
+Validation in default.stats:
+- INFO Stats are currently ENABLED. Usage statistics are being
+  collected. Thank you! These stats inform improvements to the product, and that
+  helps the community. To disable, run `hal config stats disable`. To learn more
+  about what and how stats data is used, please see
+  https://spinnaker.io/docs/community/stay-informed/stats.
+
++ Preparation complete... deploying Spinnaker
++ Get current deployment
+  Success
++ Apply deployment
+  Success
++ Deploy spin-redis
+  Success
++ Deploy spin-clouddriver
+  Success
++ Deploy spin-front50
+  Success
++ Deploy spin-orca
+  Success
++ Deploy spin-deck
+  Success
++ Deploy spin-echo
+  Success
++ Deploy spin-gate
+  Success
++ Deploy spin-igor
+  Success
++ Deploy spin-rosco
+  Success
++ Run `hal deploy connect` to connect to Spinnaker.
+```
+
 
