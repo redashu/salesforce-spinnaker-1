@@ -61,3 +61,42 @@ spin-rosco         ClusterIP   10.107.131.39    <none>        8087/TCP         2
 <img src="aws.png">
 
 
+## halyard commands -- for spinnaker --
+
+### checking existing config details 
+
+```
+[salesforce@spinnaker ~]$ docker  exec  -it  halyard bash 
+bash-5.0$ hal config list 
++ Get all deployment configurations
+  Success
++ Retrieved all deployments.
+- name: default
+  version: 1.26.7
+  providers:
+    appengine:
+      enabled: false
+
+```
+
+### spinnaker with docker & with jenkins and docker hub 
+
+<img src="spd.png">
+
+
+### Deploying eks cluster from spinnaker halyard instances using eksctl 
+
+```
+bash-5.0$ eksctl create cluster --name=eks-spinnaker --nodes=2  --region=us-east-1 --write-kubeconfig=false 
+2022-09-23 05:08:08 [ℹ]  eksctl version 0.112.0
+2022-09-23 05:08:08 [ℹ]  using region us-east-1
+2022-09-23 05:08:08 [ℹ]  setting availability zones to [us-east-1a us-east-1c]
+2022-09-23 05:08:08 [ℹ]  subnets for us-east-1a - public:192.168.0.0/19 private:192.168.64.0/19
+2022-09-23 05:08:08 [ℹ]  subnets for us-east-1c - public:192.168.32.0/19 private:192.168.96.0/19
+2022-09-23 05:08:08 [ℹ]  nodegroup "ng-3b8c255e" will use "" [AmazonLinux2/1.22]
+2022-09-23 05:08:08 [ℹ]  using Kubernetes version 1.22
+2022-09-23 05:08:08 [ℹ]  creating EKS cluster "eks-spinnaker" in "us-east-1" region with
+```
+
+
+
