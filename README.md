@@ -98,5 +98,106 @@ bash-5.0$ eksctl create cluster --name=eks-spinnaker --nodes=2  --region=us-east
 2022-09-23 05:08:08 [ℹ]  creating EKS cluster "eks-spinnaker" in "us-east-1" region with
 ```
 
+### adding EKS in existing Spinnaker halyard --kubeconfig 
 
+```
+bash-5.0$ kubectl config get-contexts 
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin   spinnaker
+bash-5.0$ 
+bash-5.0$ 
+bash-5.0$ aws eks update-kubeconfig --name eks-spinnaker-new --region=us-east-1  --alias eks-spinnaker
+Added new context eks-spinnaker to /home/spinnaker/.kube/config
+bash-5.0$ 
+bash-5.0$ 
+bash-5.0$ kubectl config get-contexts 
+CURRENT   NAME                          CLUSTER                                                        AUTHINFO                                                       NAMESPACE
+*         eks-spinnaker                 arn:aws:eks:us-east-1:751136288263:cluster/eks-spinnaker-new   arn:aws:eks:us-east-1:751136288263:cluster/eks-spinnaker-new   
+          kubernetes-admin@kubernetes   kubernetes                                                     kubernetes-admin                                               spinnaker
 
+```
+
+### switching betweekn k8s cluster --
+
+```
+205  aws eks update-kubeconfig --name eks-spinnaker-new --region=us-east-1  --alias eks-spinnaker
+  206  kubectl config get-contexts 
+  207  history 
+  208  kubectl config get-contexts 
+  209  kubectl  get nodes
+  210  kubectl config use-context  spinnaker
+  211  kubectl config use-context   kubernetes-admin@kubernetes
+  212  kubectl  get nodes
+  213  history 
+bash-5.0$ 
+bash-5.0$ kubectl  get nodes
+NAME            STATUS   ROLES           AGE   VERSION
+control-plane   Ready    control-plane   9d    v1.25.0
+node1           Ready    <none>          9d    v1.25.0
+node2           Ready    <none>          9d    v1.25.0
+node3           Ready    <none>          9d    v1.25.0
+bash-5.0$ kubectl config use-context   eks-spinnaker
+Switched to context "eks-spinnaker".
+bash-5.0$ 
+bash-5.0$ kubectl  get nodes
+NAME                             STATUS   ROLES    AGE   VERSION
+ip-192-168-21-37.ec2.internal    Ready    <none>   14m   v1.22.12-eks-ba74326
+ip-192-168-61-165.ec2.internal   Ready    <none>   14m   v1.22.12-eks-ba74326
+bash-5.0$ 
+
+```
+
+### adding EKS in Halyard configuration 
+
+```
+bash-5.0$ CONTEXT=$(kubectl config current-context)
+bash-5.0$ 
+bash-5.0$ hal config provider kubernetes account add eks-spinnaker --context $CONTEXT
++ Get current deployment
+  Success
++ Add the eks-spinnaker account
+  Success
++ Successfully added account eks-spinnaker for provider
+  kubernetes.
+
+```
+
+### finally adding eks in halyard config 
+
+```
+bash-5.0$ hal deploy apply 
++ Get current deployment
+  Success
++ Prep deployment
+  Success
+Validation in default.features:
+- WARNING Field Features.artifacts not supported for Spinnaker
+  version 1.26.7: Artifacts are now enabled by default.
+? You no longer need this.
+
+Validation in default.stats:
+- INFO Stats are currently ENABLED. Usage statistics are being
+  collected. Thank you! These stats inform improvements to the product, and that
+  helps the community. To disable, run `hal config stats disable`. To learn more
+  about what and how stats data is used, please see
+  https://spinnaker.io/docs/community/stay-informed/stats.
+
++ Preparation complete... deploying Spinnaker
++ Get current deployment
+  Success
+
+```
+
+### Now creating pipelines using application 
+
+<img src="apps.png">
+
+### creating gitrepo and updating YAML 
+
+```
+24  kubectl create  ns ashu-dev-ns --dry-run=client -o yaml 
+   
+   26  kubectl  create  deployment  ashu-app --image=dockerashu/ashumobiwebapp:6  --replicas=3 --port 80  --namespace ashu-dev-ns  --dry-run=client -o yaml 
+   27  history 
+   28  kubectl create  service nodeport  ashusvc1 --tcp 1234:80 --namespace ashu-dev-ns --dry-run=client -o yaml 
+```
