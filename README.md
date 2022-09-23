@@ -201,3 +201,44 @@ Validation in default.stats:
    27  history 
    28  kubectl create  service nodeport  ashusvc1 --tcp 1234:80 --namespace ashu-dev-ns --dry-run=client -o yaml 
 ```
+
+### auto trigger concept in spinnaker 
+
+<img src="trigger.png">
+
+### verify it 
+
+```
+salesforce@spinnaker ~]$ kubectl  get  po -n spinnaker 
+NAME                                READY   STATUS    RESTARTS       AGE
+spin-clouddriver-855b56d75f-j5sww   1/1     Running   0              60m
+spin-deck-85bb5b7975-nq9vs          1/1     Running   3 (3h3m ago)   19h
+spin-echo-6c75749dbd-mrtkv          1/1     Running   1 (3h3m ago)   4h45m
+spin-front50-797bbb5d79-wvzpp       1/1     Running   1 (3h3m ago)   4h45m
+spin-gate-548d4f75-wqj9r            1/1     Running   1 (3h3m ago)   4h45m
+spin-igor-6f5d6998f-t4rhb           1/1     Running   1 (3h3m ago)   4h41m
+spin-orca-57b49cf44-8r54f           1/1     Running   1 (3h3m ago)   4h45m
+spin-redis-869dfc57c5-jv52l         1/1     Running   4 (3h3m ago)   24h
+spin-rosco-6c485687d-5wdt5          1/1     Running   1 (3h3m ago)   4h45m
+[salesforce@spinnaker ~]$ kubectl  get  svc  -n spinnaker 
+NAME               TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+spin-clouddriver   ClusterIP   10.101.53.124    <none>        7002/TCP         24h
+spin-deck          NodePort    10.101.175.70    <none>        9000:31595/TCP   24h
+spin-echo          ClusterIP   10.103.87.98     <none>        8089/TCP         24h
+spin-front50       ClusterIP   10.105.196.153   <none>        8080/TCP         24h
+spin-gate          NodePort    10.97.52.168     <none>        8084:32570/TCP   24h
+spin-igor          ClusterIP   10.105.55.223    <none>        8088/TCP         4h46m
+spin-orca          ClusterIP   10.104.160.143   <none>        8083/TCP         24h
+spin-redis         ClusterIP   10.96.195.111    <none>        6379/TCP         24h
+spin-rosco         ClusterIP   10.107.131.39    <none>        8087/TCP         24h
+[salesforce@spinnaker ~]$ kubectl  get  ep spin-igor  -n spinnaker 
+NAME        ENDPOINTS             AGE
+spin-igor   192.168.104.45:8088   4h46m
+[salesforce@spinnaker ~]$ kubectl  get  po   spin-igor-6f5d6998f-t4rhb -o wide -n spinnaker 
+NAME                        READY   STATUS    RESTARTS       AGE     IP               NODE    NOMINATED NODE   READINESS GATES
+spin-igor-6f5d6998f-t4rhb   1/1     Running   1 (3h5m ago)   4h42m   192.168.104.45   node2   <none>           <none>
+[salesforce@spinnaker ~]$ 
+
+```
+
+
